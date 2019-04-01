@@ -29,9 +29,9 @@ struct user_regs_struct *regs, int *status)
         printf(") = 0x%llx\n", next.rax);
     else
         printf(") = ?\n");
-    if (regs->rax == SYS_openat && regs->orig_rax != (unsigned)-1) {
+    if (regs->rax == SYS_openat && regs->orig_rax != UINT64_MAX - 1) {
         stack_lib("test");
-        printf("%lld\n", regs->orig_rax);
+        printf("%lx\n", UINT64_MAX - 1);
     }
 }
 
