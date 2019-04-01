@@ -25,7 +25,7 @@ const char *stack(const char *data)
     static const char **stack = NULL;
     size_t len = 0;
 
-    if (data == NULL)
+    if (data == NULL && stack != NULL)
         return (stack_pop(stack));
     if (stack == NULL) {
         stack = malloc(sizeof(const char *) * 2);

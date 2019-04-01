@@ -33,6 +33,7 @@ int get_signal(int status);
 pid_t launch_process(char **av);
 void print_syscall(const char *elf, pid_t pid, struct user_regs_struct *regs);
 void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs);
+void print_ret(const char *elf, pid_t pid, struct user_regs_struct *regs);
 const char *stack(const char *data);
 
 #endif

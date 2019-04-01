@@ -30,6 +30,8 @@ void ftrace(const char *elf, pid_t pid)
         }
         else if ((rip & 0xff) == 0xe8)
             print_call(elf, pid, &regs);
+        else if ((rip & 0xff) == 0xc3)
+            print_ret(elf, pid, &regs);
         forward_next_step(pid, &status, sig);
     }
 }

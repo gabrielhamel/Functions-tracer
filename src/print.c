@@ -39,6 +39,19 @@ void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs)
     snprintf(str, 15, "%x", (unsigned int)offset);
     offset = strtol(str, NULL, 16);
     sym = get_name_sym(elf, offset);
-    if (sym != NULL)
+    if (sym != NULL) {
         printf("Entering function %s at 0x%x\n", sym, (unsigned int)offset);
+        stack(sym);
+    }
+}
+
+void print_ret(const char *elf, pid_t pid, struct user_regs_struct *regs)
+{
+    const char *name = stack(NULL);
+
+    (void)elf;
+    (void)pid;
+    (void)regs;
+    if (name != NULL)
+        printf("Leaving function %s\n", name);
 }
