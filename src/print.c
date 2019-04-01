@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/ptrace.h>
 #include <syscall.h>
 #include "ftrace.h"
@@ -15,6 +16,7 @@ void print_syscall(const char *elf, pid_t pid,
 struct user_regs_struct *regs, int *status)
 {
     struct user_regs_struct next;
+    char *tmp;
 
     (void)elf;
     forward_next_step(pid, status, 0);
@@ -30,7 +32,10 @@ struct user_regs_struct *regs, int *status)
     else
         printf(") = ?\n");
     if (regs->rax == SYS_openat && next.rax != UINT64_MAX - 1) {
-        printf("%s\n", get_memstr(pid, regs->rsi));
+        tmp = get_memstr(pid, regs->rsi);
+        printf("%s\n", tmp);
+        if (strstr(tmp, ".so"))
+            stack_lib(tmp);
     }
 }
 
