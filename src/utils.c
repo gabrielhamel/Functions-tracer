@@ -84,7 +84,7 @@ char *get_memstr(pid_t pid, unsigned long long int reg)
     while (!memchr(str.str, 0, sizeof(long))) {
         str.ptr = ptrace(PTRACE_PEEKTEXT, pid, reg + i++ * sizeof(long));
         newstr = realloc(newstr, strlen(newstr) + sizeof(long));
-        strcat(newstr + strlen(newstr), str.str);
+        strncat(newstr + strlen(newstr), str.str, sizeof(long));
     }
     return (newstr);
 }
