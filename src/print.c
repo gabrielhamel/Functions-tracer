@@ -29,7 +29,7 @@ struct user_regs_struct *regs, int *status)
         printf(") = 0x%llx\n", next.rax);
     else
         printf(") = ?\n");
-    if (regs->orig_rax == (long long)-2)
+    if (regs->orig_rax == (unsigned long long int)-2)
         printf("lol\n");
     
     // if (regs->rax == SYS_openat) {
