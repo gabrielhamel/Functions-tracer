@@ -18,7 +18,6 @@ void ftrace(const char *elf, pid_t pid)
     int sig = 0;
     struct user_regs_struct regs;
 
-    signal(SIGINT, SIG_IGN);
     waitpid(pid, &status, 0);
     while (WIFSTOPPED(status)) {
         ptrace(PTRACE_GETREGS, pid, NULL, &regs);

@@ -59,6 +59,7 @@ pid_t launch_process(char **av)
     if (av == NULL)
         return (-1);
     pid = fork();
+    signal(SIGINT, SIG_IGN);
     if (pid == -1)
         return (-1);
     else if (pid == 0) {
