@@ -1,73 +1,44 @@
 /*
 ** EPITECH PROJECT, 2019
-** PSU_strace_2018
+** PSU_ftrace_2018
 ** File description:
 ** print
 */
 
-#include "strace.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ptrace.h>
+#include <syscall.h>
+#include "ftrace.h"
 
-size_t print_char(char c)
+void print_syscall(const char *elf, pid_t pid, struct user_regs_struct *regs)
 {
-    if (c >= ' ' && c <= '~')
-        return (dprintf(OUT, "%c", c));
-    else
-        return (dprintf(OUT, "%s", characters_g[c].str));
-}
+    struct user_regs_struct next;
 
-size_t print_reg(op_t *op, reg_t reg, const syscall_arg_t *type)
-{
-    return (print_default(op, reg));
-}
-
-reg_t get_reg64(struct user_regs_struct *regs, int i)
-{
-    switch (i) {
-        case 0:
-            return (regs->rdi);
-        break;
-        case 1:
-            return (regs->rsi);
-        break;
-        case 2:
-            return (regs->rdx);
-        break;
-        case 3:
-            return (regs->r10);
-        break;
-        case 4:
-            return (regs->r8);
-        break;
-        case 5:
-            return (regs->r9);
+    (void)elf;
+    printf("Syscall %s(", syscalls_tab[regs->rax].name);
+    for (int i = 0; i < syscalls_tab[regs->rax].nb; i++) {
+        printf("0x%llx", get_arg_no(regs, i));
+        if (i + 1 != syscalls_tab[regs->rax].nb)
+            printf(", ");
     }
-    return (0);
-}
-
-size_t print_header(op_t *op, struct user_regs_struct *regs)
-{
-    size_t len = 0;
-
-    len += dprintf(OUT, "Syscall ");
-    len += dprintf(OUT, "%s(", syscalls_g[regs->rax].name);
-    for (int i = 0; i < syscalls_g[regs->rax].argc; i++) {
-        len += print_reg(op, get_reg64(regs, i),
-        &syscalls_g[regs->rax].args[i]);
-        if (i + 1 != syscalls_g[regs->rax].argc)
-            len += dprintf(OUT, ", ");
-    }
-    return (len);
-}
-
-size_t print_footer(op_t *op, struct user_regs_struct *regs)
-{
-    size_t len = 0;
-
-    len += dprintf(OUT, " = ");
-    if (syscalls_g[regs->rax].noreturn == false)
-        len += print_default(op, regs->orig_rax);
+    ptrace(PTRACE_GETREGS, pid, NULL, &next);
+    if (regs->rax != SYS_exit && regs->rax != SYS_exit_group)
+        printf(") = 0x%llx\n", next.rax);
     else
-        len += dprintf(OUT, "?");
-    len += dprintf(OUT, "\n");
-    return (len);
+        printf(") = ?\n");
+}
+
+void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs)
+{
+    long rip_addr = ptrace(PTRACE_PEEKTEXT, pid, regs->rip);
+    long offset = (rip_addr >> 8) + regs->rip + 5;
+    char str[15] = {0};
+    char *sym = NULL;
+
+    snprintf(str, 15, "%lx", offset);
+    offset = strtol(str, NULL, 16);
+    sym = get_name_sym(elf, offset);
+    if (sym != NULL)
+        printf("Entering function %s at 0x%lx\n", sym, offset);
 }

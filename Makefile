@@ -7,19 +7,15 @@
 
 NAME =		ftrace
 
-CFLAGS +=	-I$(INC_DIR)
+CFLAGS +=	-I$(INC_DIR) -W -Wall -Wextra
 
 SRC =		$(SRC_DIR)/main.c \
-			$(SRC_DIR)/strace.c \
+			$(SRC_DIR)/ftrace.c \
 			$(SRC_DIR)/syscalls.c \
 			$(SRC_DIR)/print.c \
-			$(SRC_DIR)/printer.c \
-			$(SRC_DIR)/print_std.c \
-			$(SRC_DIR)/print_std2.c \
-			$(SRC_DIR)/print_std3.c \
-			$(SRC_DIR)/characters.c \
-			$(SRC_DIR)/symbol-finder.c \
-			$(SRC_DIR)/signals.c
+			$(SRC_DIR)/elf.c \
+			$(SRC_DIR)/signals.c \
+			$(SRC_DIR)/utils.c
 
 TEST =		$(TEST_DIR)/tests.c
 
