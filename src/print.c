@@ -29,9 +29,13 @@ struct user_regs_struct *regs, int *status)
         printf(") = 0x%llx\n", next.rax);
     else
         printf(") = ?\n");
-    if (regs->rax == SYS_openat && regs->orig_rax != (unsigned long long)-1) {
-        stack_lib("test");
-    }
+    if (regs->orig_rax == (long long)-2)
+        printf("lol\n");
+    
+    // if (regs->rax == SYS_openat) {
+    //     stack_lib("test");
+    //     printf("%lx\n", (long long)-2);
+    // }
 }
 
 void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs)
