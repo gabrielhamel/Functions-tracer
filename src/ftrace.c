@@ -24,8 +24,7 @@ void ftrace(const char *elf, pid_t pid)
         rip = ptrace(PTRACE_PEEKTEXT, pid, regs.rip);
         sig = get_signal(status);
         if ((rip & 0xffff) == 0x50f) {
-            forward_next_step(pid, &status, 0);
-            print_syscall(elf, pid, &regs);
+            print_syscall(elf, pid, &regs, &status);
             continue;
         }
         else if ((rip & 0xff) == 0xe8)

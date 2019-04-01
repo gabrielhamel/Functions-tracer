@@ -11,11 +11,13 @@
 #include <syscall.h>
 #include "ftrace.h"
 
-void print_syscall(const char *elf, pid_t pid, struct user_regs_struct *regs)
+void print_syscall(const char *elf, pid_t pid,
+struct user_regs_struct *regs, int *status)
 {
     struct user_regs_struct next;
 
     (void)elf;
+    forward_next_step(pid, status, 0);
     printf("Syscall %s(", syscalls_tab[regs->rax].name);
     for (int i = 0; i < syscalls_tab[regs->rax].nb; i++) {
         printf("0x%llx", get_arg_no(regs, i));
