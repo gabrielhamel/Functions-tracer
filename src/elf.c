@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "ftrace.h"
 
 static Elf_Scn *find_sym_table(Elf *elf)
 {
@@ -57,7 +58,7 @@ static char *find_symname(Elf *elf, Elf_Scn *stab, size_t size, long addr)
     return (NULL);
 }
 
-char *get_name_sym(const char *filename, long addr)
+char *get_name_sym(char *filename, long addr)
 {
     Elf *elf = NULL;
     Elf_Scn *symtab = NULL;

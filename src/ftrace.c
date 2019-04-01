@@ -11,7 +11,7 @@
 #include <sys/wait.h>
 #include "ftrace.h"
 
-void ftrace(const char *elf, pid_t pid)
+void ftrace(char *elf, pid_t pid)
 {
     int status;
     long rip = 0;
@@ -24,7 +24,7 @@ void ftrace(const char *elf, pid_t pid)
         rip = ptrace(PTRACE_PEEKTEXT, pid, regs.rip);
         sig = get_signal(status);
         if ((rip & 0xffff) == 0x50f) {
-            print_syscall(elf, pid, &regs, &status);
+            print_syscall(pid, &regs, &status);
             continue;
         }
         else if ((rip & 0xff) == 0xe8)

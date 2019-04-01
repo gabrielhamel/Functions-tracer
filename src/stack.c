@@ -7,10 +7,10 @@
 
 #include <stdlib.h>
 
-static const char *stack_pop(const char **stack)
+static char *stack_pop(char **stack)
 {
     size_t len = 0;
-    const char *data = NULL;
+    char *data = NULL;
 
     for (; stack[len] != NULL; len++);
     if (len == 0)
@@ -20,40 +20,40 @@ static const char *stack_pop(const char **stack)
     return (data);
 }
 
-const char *stack(const char *data)
+char *stack(char *data)
 {
-    static const char **stack = NULL;
+    static char **stack = NULL;
     size_t len = 0;
 
     if (data == NULL && stack != NULL)
         return (stack_pop(stack));
     if (stack == NULL) {
-        stack = malloc(sizeof(const char *) * 2);
+        stack = malloc(sizeof(char *) * 2);
         stack[0] = data;
         stack[1] = NULL;
     } else {
         for (; stack[len] != NULL; len++);
-        stack = realloc(stack, sizeof(const char *) * (len + 2));
+        stack = realloc(stack, sizeof(char *) * (len + 2));
         stack[len] = data;
         stack[len + 1] = NULL;
     }
     return (NULL);
 }
 
-const char **stack_lib(const char *data)
+char **stack_lib(char *data)
 {
-    static const char **stack = NULL;
+    static char **stack = NULL;
     size_t len = 0;
 
     if (data == NULL)
         return (stack);
     if (stack == NULL) {
-        stack = malloc(sizeof(const char *) * 2);
+        stack = malloc(sizeof(char *) * 2);
         stack[0] = data;
         stack[1] = NULL;
     } else {
         for (; stack[len] != NULL; len++);
-        stack = realloc(stack, sizeof(const char *) * (len + 2));
+        stack = realloc(stack, sizeof(char *) * (len + 2));
         stack[len] = data;
         stack[len + 1] = NULL;
     }

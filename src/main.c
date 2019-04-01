@@ -17,6 +17,7 @@ int main(int ac, char **av)
         dprintf(STDERR_FILENO, "USAGE: ftrace <command>\n");
         return (84);
     }
+    stack_lib(search_bin((av + 1)[0]));
     pid = launch_process(av + 1);
     if (pid == -1)
         return (84);
