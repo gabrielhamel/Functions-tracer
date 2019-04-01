@@ -39,3 +39,24 @@ const char *stack(const char *data)
     }
     return (NULL);
 }
+
+const char **stack_lib(const char *data)
+{
+    static const char **stack = NULL;
+    size_t len = 0;
+
+    if (data == NULL)
+        return (stack);
+    if (stack == NULL) {
+        stack = malloc(sizeof(const char *) * 2);
+        stack[0] = data;
+        stack[1] = NULL;
+    } else {
+        for (; stack[len] != NULL; len++);
+        stack = realloc(stack, sizeof(const char *) * (len + 2));
+        stack[len] = data;
+        stack[len + 1] = NULL;
+    }
+    printf("Added %s\n", stack[len]);
+    return (NULL);
+}

@@ -36,5 +36,6 @@ struct user_regs_struct *regs, int *status);
 void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs);
 void print_ret(const char *elf, pid_t pid, struct user_regs_struct *regs);
 const char *stack(const char *data);
+const char **stack_lib(const char *data);
 
 #endif

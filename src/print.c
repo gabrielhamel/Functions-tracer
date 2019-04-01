@@ -29,6 +29,9 @@ struct user_regs_struct *regs, int *status)
         printf(") = 0x%llx\n", next.rax);
     else
         printf(") = ?\n");
+    if (regs->rax == SYS_openat) {
+        stack_lib("test");
+    }
 }
 
 void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs)
