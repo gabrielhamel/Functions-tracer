@@ -31,7 +31,8 @@ struct user_regs_struct *regs, int *status)
         printf(") = ?\n");
     if (regs->rax == SYS_openat && regs->orig_rax != UINT64_MAX - 1) {
         stack_lib("test");
-        printf("%lx\n", UINT64_MAX - 1);
+        printf("%lld\n", regs->orig_rax);
+        printf("%lld\n", UINT64_MAX - 1);
     }
 }
 
