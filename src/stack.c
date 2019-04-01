@@ -57,6 +57,5 @@ const char **stack_lib(const char *data)
         stack[len] = data;
         stack[len + 1] = NULL;
     }
-    printf("Added %s\n", stack[len]);
     return (NULL);
 }

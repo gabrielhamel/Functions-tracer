@@ -8,8 +8,10 @@
 #include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <string.h>
 #include "ftrace.h"
 
 unsigned long long get_arg_no(struct user_regs_struct *regs, char no)
@@ -70,4 +72,19 @@ pid_t launch_process(char **av)
         return (-1);
     }
     return (pid);
+}
+
+char *get_memstr(pid_t pid, unsigned long long int reg)
+{
+    string_t str;
+    size_t i = 0;
+    char *newstr = strdup("");
+
+    memset(str.str, 1, sizeof(long));
+    while (!memchr(str.str, 0, sizeof(long))) {
+        str.ptr = ptrace(PTRACE_PEEKTEXT, pid, reg + i++ * sizeof(long));
+        newstr = realloc(newstr, strlen(newstr) + sizeof(long));
+        strcat(newstr + strlen(newstr), str.str);
+    }
+    return (newstr);
 }

@@ -22,6 +22,11 @@ struct data_t {
     const char *name;
 };
 
+typedef union string_t {
+    long ptr;
+    char str[sizeof(long)];
+} string_t;
+
 extern const struct data_t syscalls_tab[];
 extern const struct data_t signals_tab[];
 
@@ -37,5 +42,6 @@ void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs);
 void print_ret(const char *elf, pid_t pid, struct user_regs_struct *regs);
 const char *stack(const char *data);
 const char **stack_lib(const char *data);
+char *get_memstr(pid_t pid, unsigned long long int reg);
 
 #endif

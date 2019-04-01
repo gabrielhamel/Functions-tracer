@@ -30,9 +30,7 @@ struct user_regs_struct *regs, int *status)
     else
         printf(") = ?\n");
     if (regs->rax == SYS_openat && next.rax != UINT64_MAX - 1) {
-        stack_lib("test");
-        printf("%lld\n", next.rax);
-        printf("%lld\n", UINT64_MAX - 1);
+        printf("%s\n", get_memstr(pid, regs->rsi));
     }
 }
 
