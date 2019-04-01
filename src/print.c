@@ -36,9 +36,9 @@ void print_call(const char *elf, pid_t pid, struct user_regs_struct *regs)
     char str[15] = {0};
     char *sym = NULL;
 
-    snprintf(str, 15, "%lx", offset);
+    snprintf(str, 15, "%x", (unsigned int)offset);
     offset = strtol(str, NULL, 16);
     sym = get_name_sym(elf, offset);
     if (sym != NULL)
-        printf("Entering function %s at 0x%lx\n", sym, offset);
+        printf("Entering function %s at 0x%x\n", sym, (unsigned int)offset);
 }
