@@ -23,11 +23,21 @@ static Elf *getelf(const char *file)
     return (elf);
 }
 
+static void empty_stack(void)
+{
+    char *str = stack(NULL);
+
+    while (str){
+        if (str != NULL && strlen(str))
+            printf("Leaving function %s\n", str);
+        str = stack(NULL);
+    }
+}
+
 int main(int ac, char **av)
 {
     Elf *elf = getelf(av[1]);
     pid_t pid = -1;
-    char *str;
 
     if (ac == 1) {
         dprintf(STDERR_FILENO, "USAGE: ftrace <command>\n");
@@ -38,12 +48,7 @@ int main(int ac, char **av)
         return (84);
     printf("Entering function main\n");
     ftrace(elf, pid);
-    str = stack(NULL);
-    while (str){
-        if (str != NULL && strlen(str))
-            printf("Leaving function %s\n", str);
-        str = stack(NULL);
-    }
+    empty_stack();
     printf("Leaving function main\n");
     return (0);
 }
