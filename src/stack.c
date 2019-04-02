@@ -5,7 +5,9 @@
 ** stack
 */
 
+#include <gelf.h>
 #include <stdlib.h>
+#include "ftrace.h"
 
 static char *stack_pop(char **stack)
 {
@@ -27,26 +29,6 @@ char *stack(char *data)
 
     if (data == NULL && stack != NULL)
         return (stack_pop(stack));
-    if (stack == NULL) {
-        stack = malloc(sizeof(char *) * 2);
-        stack[0] = data;
-        stack[1] = NULL;
-    } else {
-        for (; stack[len] != NULL; len++);
-        stack = realloc(stack, sizeof(char *) * (len + 2));
-        stack[len] = data;
-        stack[len + 1] = NULL;
-    }
-    return (NULL);
-}
-
-char **stack_lib(char *data)
-{
-    static char **stack = NULL;
-    size_t len = 0;
-
-    if (data == NULL)
-        return (stack);
     if (stack == NULL) {
         stack = malloc(sizeof(char *) * 2);
         stack[0] = data;

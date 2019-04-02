@@ -11,7 +11,7 @@
 #include <sys/wait.h>
 #include "ftrace.h"
 
-void ftrace(char *elf, pid_t pid)
+void ftrace(Elf *elf, pid_t pid)
 {
     int status;
     long rip = 0;

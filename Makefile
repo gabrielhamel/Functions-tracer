@@ -16,10 +16,7 @@ SRC =		$(SRC_DIR)/main.c \
 			$(SRC_DIR)/elf.c \
 			$(SRC_DIR)/signals.c \
 			$(SRC_DIR)/utils.c \
-			$(SRC_DIR)/stack.c \
-			$(SRC_DIR)/path.c \
-			$(SRC_DIR)/strtab.c \
-			$(SRC_DIR)/strutils.c
+			$(SRC_DIR)/stack.c
 
 
 TEST =		$(TEST_DIR)/tests.c

@@ -73,21 +73,3 @@ pid_t launch_process(char **av)
     }
     return (pid);
 }
-
-char *get_memstr(pid_t pid, unsigned long long int reg)
-{
-    string_t str;
-    size_t i = 0;
-    char *newstr = strdup("");
-    size_t len = 0;
-
-    memset(str.str, 1, sizeof(long));
-    while (!memchr(str.str, 0, sizeof(long))) {
-        str.ptr = ptrace(PTRACE_PEEKTEXT, pid, reg + i++ * sizeof(long));
-        len = strlen(newstr);
-        newstr = realloc(newstr, len + sizeof(long) + 1);
-        memset(newstr + len, 0, sizeof(long));
-        strncat(newstr + strlen(newstr), str.str, sizeof(long));
-    }
-    return (newstr);
-}
