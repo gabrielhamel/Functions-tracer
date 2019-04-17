@@ -27,9 +27,9 @@ void ftrace(Elf *elf, pid_t pid)
             print_syscall(pid, &regs, &status);
             continue;
         }
-        else if ((rip & 0xff) == 0xe8)
+        if ((rip & 0xff) == 0xe8)
             print_call(elf, pid, &regs);
-        else if ((rip & 0xff) == 0xc3)
+        if ((rip & 0xff) == 0xc3)
             print_ret(elf, pid, &regs);
         forward_next_step(pid, &status, sig);
     }

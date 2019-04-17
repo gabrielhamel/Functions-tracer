@@ -11,16 +11,16 @@
 #include <fcntl.h>
 #include "ftrace.h"
 
-static Elf *getelf(const char *file)
+static void getelf(const char *file, Elf **elf)
 {
-    Elf *elf = NULL;
     int fd = open(file, O_RDONLY);
 
-    if (fd == -1)
-        return (NULL);
+    if (fd == -1) {
+        *elf = NULL;
+        return;
+    }
     elf_version(EV_CURRENT);
-    elf = elf_begin(fd, ELF_C_READ, NULL);
-    return (elf);
+    *elf = elf_begin(fd, ELF_C_READ, NULL);
 }
 
 static void empty_stack(void)
@@ -36,13 +36,14 @@ static void empty_stack(void)
 
 int main(int ac, char **av)
 {
-    Elf *elf = getelf(av[1]);
+    Elf *elf = NULL;
     pid_t pid = -1;
 
     if (ac == 1) {
         dprintf(STDERR_FILENO, "USAGE: ftrace <command>\n");
         return (84);
     }
+    getelf(av[1], &elf);
     pid = launch_process(av + 1);
     if (pid == -1)
         return (84);
